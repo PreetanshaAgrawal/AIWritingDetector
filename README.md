@@ -1,8 +1,8 @@
-# AI Writing Director
+# AI Writing detector
 
 ## Overview
 
-This project is part of the Coding Challenge Series. The AI Writing Director is designed to [brief description of what it does].
+This project is part of the Coding Challenge Series. The AI Writing detector is designed to [brief description of what it does].
 
 ## Features
 
