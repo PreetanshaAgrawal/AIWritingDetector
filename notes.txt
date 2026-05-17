@@ -1,0 +1,143 @@
+The Challenge - Building an AI Writing Detector
+You’ll build a system that accepts text input and analyses it using a rule-based approach to detect linguistic patterns and characteristics commonly found in AI-generated writing. Your detector will evaluate text across multiple dimensions — vocabulary, sentence structure, rhetorical patterns, and statistical properties — and produce a detailed report showing the likelihood the text was AI-generated. And no, the em-dash ‘—‘ is not one of them!
+
+This is a coding challenge that focuses on text analysis, pattern detection, and building a scoring system. You can implement it in any programming language you’re comfortable with.
+
+Step Zero
+In this introductory step you’re going to set your environment up ready to begin developing and testing your solution.
+
+Choose a programming language you’re comfortable with for text analysis and string manipulation. You’ll be doing a fair amount of tokenisation, regular expression matching, and statistical calculation. Consider whether you’d like to build a command-line tool, a web-based interface, or both.
+
+For testing, you’ll evaluate your detector against sample texts. Some AI-generated and some human-written. Prepare a small collection of texts to test against as you build. You can generate AI-written samples by asking any large language model to write an essay on a topic, and use your own writing or published articles for the human-written samples.
+
+Step 1
+In this step your goal is to accept text input for analysis and display basic statistics about it.
+
+Your system should provide a way for users to submit text. Whether that’s reading from a file, accepting command-line input, or providing a text area in a web interface. As text is entered, display a character count and word count. If the input is empty, the analysis should not proceed.
+
+Testing guidance: Load a sample text and verify that your character count and word count are correct. Try submitting empty input and confirm your system handles it gracefully by preventing the analysis from running.
+
+Step 2
+In this step your goal is to identify vocabulary and phrases that are commonly overused in AI-generated text.
+
+Language models have characteristic vocabulary patterns, they favour words like “delve into”, “navigate”, “robust”, “innovative solutions”, “transformative”, “leverage”, “streamline”, and “ecosystem”. Build a detector that scans for these LLM-signature words and phrases and tracks how many distinct ones appear. You can find examples in Wikipedia’s Signs of AI writing article.
+
+Score this detector based on the number of distinct AI vocabulary terms found, with each contributing a few points up to a maximum cap. This gives you your first pattern detection category.
+
+Testing guidance: Write or generate a short AI-written essay and run your detector on it. You should find multiple hits. Then run it on a piece of your own writing. You should see far fewer. Verify that the score increases with more AI vocabulary terms but doesn’t exceed your cap.
+
+Step 3
+In this step your goal is to identify several common structural patterns in AI writing. Language models frequently use:
+
+The “rule of three” — describing things in groups of three adjectives, three nouns, or three parallel phrases. AI text is full of these.
+
+Negative parallelism — rigid constructions like “not only... but also” and similar overly formal parallel structures.
+
+Outline-style conclusions — formulaic endings that follow the pattern: “Despite [challenges], [subject] offers [benefits/opportunities].”
+
+False ranges — “from X to Y” constructions where the two endpoints don’t form a coherent or logical scale.
+
+Build detectors for each of these patterns. When you find them, record where they occur in the text and contribute to the score. Each pattern category should have its own maximum cap so that no single category can dominate the overall score. Again you can find examples in Wikipedia’s Signs of AI writing article.
+
+Testing guidance: Craft test sentences for each pattern type and verify your detectors find them. For the rule of three, try: “This approach is efficient, scalable, and maintainable.” For negative parallelism, try: “It not only improves performance but also enhances reliability.” Test that your scoring caps are working, text saturated with one pattern type should hit the cap and stop accumulating.
+
+Step 4
+In this step your goal is to identify patterns where text makes broad claims without concrete evidence. AI writing often lacks specificity, hiding behind phrases that sound authoritative but name no actual sources.
+
+Build detectors for three categories:
+
+Vague attributions — phrases like “experts agree”, “studies show”, “research indicates”, and “industry insiders report” that appeal to unnamed sources.
+
+Superficial analysis — hedging and filler like “it is worth noting”, “significant developments”, “one could argue”, and “various sources indicate”.
+
+Overgeneralisation — patterns that frame limited information as universal, such as “everyone knows”, “it is well established”, and “universal consensus”.
+
+Each category should contribute to the score independently, with its own cap.
+
+Testing guidance: Write test sentences containing each type of vague language and verify your detectors find them. Then test with text that contains legitimate attributions (”According to a 2024 study by Smith et al. in Nature...”) and confirm your detector doesn’t flag specific, concrete citations.
+
+Step 5
+In this step your goal is to identify excessive emphasis and promotional language patterns. AI writing tends to oversell, using superlatives and marketing-style phrasing that reads more like advertising copy than natural writing.
+
+Build detectors for three categories:
+
+Undue emphasis — excessive use of superlatives, intensifiers (”tremendous”, “remarkable”, “groundbreaking”), and emphatic punctuation.
+
+Promotional language — marketing phrasing like “game-changer”, “revolutionary”, “impressive features”, and “transformative potential”.
+
+Elegant variation — where the same concept or entity is repeatedly referred to by different but equivalent terms across sentences. AI text often cycles through synonyms for the same thing rather than simply repeating the word as a human would.
+
+Testing guidance: Run your detectors on marketing copy or AI-generated product descriptions — these should score highly. Compare with straightforward human writing about the same topic. For elegant variation, look for text where “the company” becomes “the organisation” becomes “the firm” becomes “the enterprise” within a few sentences.
+
+Step 6
+In this step your goal is to move beyond pattern matching and analyse the statistical properties of the writing itself. AI text has measurable differences from human writing in several dimensions.
+
+Build analysers for some or all of these linguistic factors:
+
+Lexical diversity — calculate the type-token ratio (unique words divided by total words). AI text often falls outside the normal range, either too uniform or artificially varied.
+
+Sentence length variation — measure the standard deviation and coefficient of variation of sentence lengths. Human writing naturally varies; AI text tends to be unnaturally uniform, with a coefficient of variation below 0.35.
+
+Passive voice frequency — identify passive voice constructions and calculate what percentage of sentences use them. Human writers typically use passive voice in 5-10% of sentences; AI text often exceeds 15%.
+
+Transition word density — detect formal discourse markers (”furthermore”, “moreover”, “consequently”, “additionally”) and calculate the percentage of sentences containing them. More than 20% suggests AI generation.
+
+Reading grade level — calculate the Flesch-Kincaid Grade Level. AI text often scores at an artificially high grade level (above 14), suggesting unnecessary complexity.
+
+Punctuation patterns — analyse the density of semicolons, em-dashes, colons, and ellipses. AI text tends to overuse semicolons and em-dashes whilst rarely using ellipses.
+
+Rare word usage — identify uncommon words and calculate their frequency. Human writers typically use rare words at 3-8% frequency; AI text often exceeds 12%.
+
+Display each factor as a labelled indicator with a percentage value and a brief explanation of what the result means. Beware that some of these fail on short text.
+
+Testing guidance: Run your analysers on both AI-written and human-written samples of similar length and topic. Compare the results — you should see measurable differences. Pay particular attention to sentence length variation and transition word density, which tend to be strong signals. Verify your Flesch-Kincaid calculation against an online readability calculator.
+
+Step 7
+In this step your goal is to aggregate all your pattern detections and linguistic analyses into an overall AI probability score from 0 to 100.
+
+Combine the contributions from each detector. If the raw combined score exceeds 100, normalise the individual contributions proportionally so the final score is clamped to 100.
+
+Then classify the text based on the score:
+
+Below 30: “Likely Human-Written”
+
+30 to 59: “Possibly AI-Generated”
+
+60 or above: “Likely AI-Generated”
+
+Display the score with a colour-coded indicator, green below 30, yellow for 30-59, red for 60 and above.
+
+Testing guidance: Run your complete detector on several sample texts. Verify that AI-written samples score above 60 and human-written samples score below 30. If your scores don’t separate well, experiment with the weighting of different detectors. Check that the individual detector contributions add up correctly to the total score, and that normalisation works when the raw total would exceed 100.
+
+Step 8
+In this step your goal is to produce a comprehensive report that shows what was detected and why the text received its classification.
+
+Your report should include:
+
+The overall AI probability score and classification
+
+Text statistics (word count, character count, average word length)
+
+A breakdown of linguistic factors, each with its score and an explanation
+
+A breakdown of pattern detections, each showing the category, occurrence count, score contribution, and explanatory text
+
+The timestamp of when the analysis was performed
+
+Present the linguistic factors and pattern detections in separate labelled sections so the report is easy to scan.
+
+Testing guidance: Generate reports for both AI-written and human-written samples. The reports should tell a coherent story about why each text received its classification. Verify that the pattern breakdowns add up to the overall score. Check that the report is readable and the explanations make sense to someone who doesn’t know the internals of your system.
+
+Going Further
+Once you’ve built the core detector, here are ways to extend it:
+
+Text highlighting — mark detected patterns directly in the original text with category-specific colours. When highlights from different detectors overlap, keep the first one and discard subsequent overlaps. Display category badges showing which patterns were found.
+
+Advanced linguistic analysis — implement Zipf’s Law comparison (comparing word frequency distribution against the expected power-law distribution), named entity density analysis, and paragraph coherence measurement through inter-sentence similarity.
+
+Copy and share — add a “Copy Results” button that copies the score and analysis to the clipboard, and an “Analyse Another Text” option to return to the input.
+
+Accuracy measurement — collect a larger corpus of human-written and AI-written samples and measure your detector’s precision and recall.
+
+Weighting experiments — try different weightings for each detector. Some patterns are stronger signals than others — which ones matter most?
+
