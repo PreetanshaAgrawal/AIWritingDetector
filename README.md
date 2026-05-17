@@ -194,7 +194,7 @@ print(result)  # Returns classification and confidence score
 
 ## 👤 Author
 
-[Your Name]
+Preetansha Agrawal
 
 ## 🤝 Contributing
 
